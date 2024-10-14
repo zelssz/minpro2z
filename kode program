@@ -1,0 +1,128 @@
+print("_______________________________")
+print("Sistem Penjadwalan Mata Kuliah ")
+print("Nama: Zelsya Rizqita Rahmadhini")
+print("Kelas: A'Sistem Informasi      ")
+
+from prettytable import PrettyTable
+import os
+
+#Bersihkan layar konsol
+os.system("cls" if os.name == "nt" else "clear")
+
+#Fungsi untuk login
+def login():
+    username = input("Masukkan username:")
+    password = input("Masukkan password:")
+    if username == "admin" and password == "2810":
+        print("Login berhasil!")
+        main()
+    else:
+        print("Login gagal! Username atau password salah.")
+        login()
+
+class Matakuliah:
+    def set_mk(mk, nama, hari, waktu):
+        mk.nama = nama 
+        mk.hari = hari
+        mk.waktu = waktu
+
+#Inisialisasi jadwal kosong
+jadwal = []
+
+#CREATE
+def tambah_mata_kuliah(nama, hari, waktu):
+    mk = Matakuliah()
+    mk.set_mk(nama, hari, waktu)
+    jadwal.append(mk)
+    print(f"Mata Kuliah {nama} telah ditambahkan.")
+
+#READ
+def tampilkan_jadwal():
+    if not jadwal:
+        print("Tidak ada mata kuliah yang dijadwalkan.")
+    else:
+        tabel = PrettyTable()
+        tabel.field_names = ["Nama Mata Kuliah", "Hari", "Waktu"]
+        for mk in jadwal:
+            tabel.add_row([mk.nama, mk.hari, mk.waktu])
+            print(tabel)
+
+#UPDATE
+def update_nama_mata_kuliah(nama, nama_baru, hari_baru, waktu_baru):
+    for mk in jadwal:
+        if mk.nama == nama:
+            mk.set_mk(nama_baru, hari_baru, waktu_baru)
+            print(f"Mata Kuliah {nama} telah diperbarui.")
+            return
+        print(f"Mata Kuliah dengan nama {nama} tidak ditemukan")
+
+#DELETE
+def hapus_mata_kuliah(nama):
+    for mk in jadwal:
+        if mk.nama == nama:
+            jadwal.remove(mk)
+            print(f"Mata Kuliah {nama} telah dihapus.")
+            return
+        print(f"Mata Kuliah dengan nama {nama} tidak ditemukan.")
+
+#Daftar Mata Kuliah
+mata_kuliah_list = [ 
+    ("Dasar Pemrograman", "Senin", "10:50 PM"),
+    ("Pancasila", "Selasa", "07:30 PM"),
+    ("PAI", "Kamis", "09:30 PM"),
+]
+
+ #Menambahkan mata kuliah ke dalam jadwal
+for mk in mata_kuliah_list:
+    tambah_mata_kuliah(mk[0], mk[1], mk[2])  
+
+#Fungsi untuk menampilkan menu jadwal
+def menu_jadwal():
+    print("\nMenu Jadwal:")
+    print("1. Tambah mata kuliah")
+    print("2. Lihat jadwal")
+    print("3. Perbarui mata kuliah")
+    print("4. Hapus mata kuliah")
+    print("5. Keluar")
+
+#Fungsi utama untuk menjalankan sistem penjadwalan
+def main():
+    print("Selamat datang di sistem penjadwalan mata kuliah.")
+    while True:
+        menu_jadwal()
+        pilihan = input ("Pilih opsi: ")
+
+        if pilihan == "1":
+            nama = input("Nama Mata Kuliah:")
+            hari = input("Hari:")
+            waktu = input("Waktu(misal, 10:00 PM): ")
+            tambah_mata_kuliah(nama, hari, waktu)
+
+        elif pilihan == "2":
+            tampilkan_jadwal()
+
+        elif pilihan == "3":
+            tampilkan_jadwal()
+            nama = input("Nama Mata Kuliah yang ingin diperbarui: ")
+            nama_baru = input("Nama Baru: ")
+            hari_baru = input("Hari Baru: ")
+            waktu_baru = input("Waktu Baru (misal, 11:00 PM): ")
+            update_nama_mata_kuliah(nama, nama_baru, hari_baru, waktu_baru)
+
+        elif pilihan == "4":
+            tampilkan_jadwal()
+            nama = input("Nama Mata Kuliah yang ingin dihapus.")
+            hapus_mata_kuliah(nama)
+
+        elif pilihan == "5":
+            tampilkan_jadwal()
+            print("Keluar dari sistem penjadwalan.")
+            break
+
+        else:
+            print("Pilihan tidak valid. Silahkan coba lagi.")
+
+if __name__ == "__main__":
+    login()
+
+
