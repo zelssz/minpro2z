@@ -9,13 +9,22 @@ import os
 #Bersihkan layar konsol
 os.system("cls" if os.name == "nt" else "clear")
 
+# Inisialisasi data pengguna
+users = {
+    "admin": "2810",
+    "zelsya": "1234",
+    "user": "0000" }
+
 #Fungsi untuk login
 def login():
     username = input("Masukkan username:")
     password = input("Masukkan password:")
-    if username == "admin" and password == "2810":
+    if username in users and users[username] == password:
         print("Login berhasil!")
-        main()
+        if username == "admin":
+            main_admin()
+        else:
+            main_user()
     else:
         print("Login gagal! Username atau password salah.")
         login()
@@ -45,7 +54,7 @@ def tampilkan_jadwal():
         tabel.field_names = ["Nama Mata Kuliah", "Hari", "Waktu"]
         for mk in jadwal:
             tabel.add_row([mk.nama, mk.hari, mk.waktu])
-            print(tabel)
+        print(tabel)
 
 #UPDATE
 def update_nama_mata_kuliah(nama, nama_baru, hari_baru, waktu_baru):
@@ -85,9 +94,9 @@ def menu_jadwal():
     print("4. Hapus mata kuliah")
     print("5. Keluar")
 
-#Fungsi utama untuk menjalankan sistem penjadwalan
-def main():
-    print("Selamat datang di sistem penjadwalan mata kuliah.")
+#Fungsi utama untuk menjalankan sistem penjadwalan untuk admin
+def main_admin():
+    print("Selamat datang di sistem penjadwalan mata kuliah (Admin).")
     while True:
         menu_jadwal()
         pilihan = input ("Pilih opsi: ")
@@ -111,7 +120,7 @@ def main():
 
         elif pilihan == "4":
             tampilkan_jadwal()
-            nama = input("Nama Mata Kuliah yang ingin dihapus.")
+            nama = input("Nama Mata Kuliah yang ingin dihapus:")
             hapus_mata_kuliah(nama)
 
         elif pilihan == "5":
@@ -122,7 +131,30 @@ def main():
         else:
             print("Pilihan tidak valid. Silahkan coba lagi.")
 
+#Fungsi utama untuk menjalankan sistem penjadwalan untuk user
+def main_user():
+    print("Selamat datang di sistem penjadwalan mata kuliah (User).")
+    while True:
+        print("\nMenu Jadwal:")
+        print("1. Lihat jadwal")
+        print("2. Keluar")
+
+        pilihan = input("Pilih opsi: ")
+
+        if pilihan == "1":
+            tampilkan_jadwal()
+
+        elif pilihan == "2":
+            tampilkan_jadwal()
+            print("Keluar dari sistem penjadwalan. ")
+            break
+
+        else:
+            print("Pilihan tidak valid. Silahkan coba lagi.")
+
 if __name__ == "__main__":
     login()
+
+
 
 
